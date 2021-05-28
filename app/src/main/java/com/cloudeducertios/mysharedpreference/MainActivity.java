@@ -14,27 +14,42 @@ import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
     EditText nameEt, passEt;
-    Button saveBtn, loadBtn;
-    TextView textShow;
+    Button saveBtn, loadBtn, increaseButton, decreaseButton;
+    TextView textShow, textScore;
+    int score = 0;
 
+    @SuppressLint("SetTextI18n")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         inIt();
+
     }
 
+    @SuppressLint("SetTextI18n")
     private void inIt() {
         nameEt = findViewById(R.id.edit_text_name);
         passEt = findViewById(R.id.edit_text_password);
         saveBtn = findViewById(R.id.save_btn);
         loadBtn = findViewById(R.id.load_btn);
+        increaseButton = findViewById(R.id.increase_btn);
+        decreaseButton = findViewById(R.id.decrease_btn);
         textShow = findViewById(R.id.text_id);
+        textScore = findViewById(R.id.text_score_id);
 
         saveBtn.setOnClickListener(this);
         loadBtn.setOnClickListener(this);
+        increaseButton.setOnClickListener(this);
+        decreaseButton.setOnClickListener(this);
+
+        //todo: when open the app then show the score.
+        if (loadScore() != 0) {
+            textScore.setText("Score: " + loadScore());
+        }
     }
 
+    @SuppressLint("SetTextI18n")
     @Override
     public void onClick(View v) {
         if (v.getId() == R.id.save_btn) {
@@ -42,9 +57,26 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         } else if (v.getId() == R.id.load_btn) {
             loadData();
+
+        } else if (v.getId() == R.id.increase_btn) {
+            score = score + 10;
+            textScore.setText("Score: " + score);
+            saveScore(score);
+            Toast.makeText(this, "increase", Toast.LENGTH_SHORT).show();
+
+        } else if (v.getId() == R.id.decrease_btn) {
+            score = score - 10;
+            textScore.setText("Score: " + score);
+            saveScore(score);
+            Toast.makeText(this, "decrease", Toast.LENGTH_SHORT).show();
+
         }
     }
 
+    /**
+     * Save data..
+     */
+    @SuppressLint("ApplySharedPref")
     public void saveData() {
         /**
          * first edit text data show..
@@ -79,6 +111,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
+
+    /**
+     * Load or Read data...
+     */
     @SuppressLint("SetTextI18n")
     private void loadData() {
         /**
@@ -104,5 +140,25 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         }
 
+    }
+
+    @SuppressLint("ApplySharedPref")
+    private void saveScore(int score) {
+
+        //todo: shared preference save
+        SharedPreferences sharedPreferences =
+                getSharedPreferences("saveData", Context.MODE_PRIVATE);
+        //todo: editor
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        //todo: key under save data.
+        editor.putInt("key", score);
+        editor.commit();
+    }
+
+    private int loadScore() {
+        SharedPreferences sharedPreferences =
+                getSharedPreferences("saveData", Context.MODE_PRIVATE);
+        int score = sharedPreferences.getInt("key", 0);
+        return score;
     }
 }

@@ -58,4 +58,26 @@
         android:textColor="@color/black"
         android:textSize="16sp" />
 
+    <Button
+        android:id="@+id/increase_btn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Increase" />
+
+
+    <Button
+        android:id="@+id/decrease_btn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Decrease" />
+
+    <TextView
+        android:id="@+id/text_score_id"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="score"
+        android:textColor="@color/black"
+        android:textSize="16sp" />
+
 </LinearLayout>
