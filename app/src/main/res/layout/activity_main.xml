@@ -4,12 +4,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_margin="12dp"
+    android:id="@+id/linear_layout"
     android:orientation="vertical"
     tools:context=".MainActivity">
 
     <EditText
         android:id="@+id/edit_text_name"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Enter your user name."
@@ -19,6 +21,8 @@
 
     <EditText
         android:id="@+id/edit_text_password"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:inputType="numberPassword"
@@ -60,6 +64,8 @@
 
     <Button
         android:id="@+id/increase_btn"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Increase" />
@@ -67,12 +73,16 @@
 
     <Button
         android:id="@+id/decrease_btn"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Decrease" />
 
     <TextView
         android:id="@+id/text_score_id"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"

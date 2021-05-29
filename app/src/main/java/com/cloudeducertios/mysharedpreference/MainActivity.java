@@ -1,14 +1,18 @@
 package com.cloudeducertios.mysharedpreference;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -16,6 +20,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     EditText nameEt, passEt;
     Button saveBtn, loadBtn, increaseButton, decreaseButton;
     TextView textShow, textScore;
+    LinearLayout linearLayout;
     int score = 0;
 
     @SuppressLint("SetTextI18n")
@@ -37,16 +42,23 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         decreaseButton = findViewById(R.id.decrease_btn);
         textShow = findViewById(R.id.text_id);
         textScore = findViewById(R.id.text_score_id);
+        linearLayout = findViewById(R.id.linear_layout);
 
         saveBtn.setOnClickListener(this);
         loadBtn.setOnClickListener(this);
         increaseButton.setOnClickListener(this);
         decreaseButton.setOnClickListener(this);
 
-        //todo: when open the app then show the score.
+        //when a activity call then showing game score.
         if (loadScore() != 0) {
             textScore.setText("Score: " + loadScore());
         }
+
+        // when I am select with store background color.
+        if (loadColor()!= getResources().getColor(R.color.design_default_color_on_primary)){
+            linearLayout.setBackgroundColor(loadColor());
+        }
+
     }
 
     @SuppressLint("SetTextI18n")
@@ -69,9 +81,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             textScore.setText("Score: " + score);
             saveScore(score);
             Toast.makeText(this, "decrease", Toast.LENGTH_SHORT).show();
-
         }
     }
+
 
     /**
      * Save data..
@@ -136,29 +148,73 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             String userName = sharedPreferences.getString("nameKey", "Data not found");
             String passName = sharedPreferences.getString("passKey", "Data not found");
             textShow.setText("Name: " + userName + "\n" + "pass: " + passName);
-
-
         }
 
     }
 
     @SuppressLint("ApplySharedPref")
     private void saveScore(int score) {
-
-        //todo: shared preference save
         SharedPreferences sharedPreferences =
-                getSharedPreferences("saveData", Context.MODE_PRIVATE);
-        //todo: editor
+                getSharedPreferences("dataSave", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
-        //todo: key under save data.
         editor.putInt("key", score);
         editor.commit();
     }
 
     private int loadScore() {
         SharedPreferences sharedPreferences =
-                getSharedPreferences("saveData", Context.MODE_PRIVATE);
-        int score = sharedPreferences.getInt("key", 0);
-        return score;
+                getSharedPreferences("dataSave", Context.MODE_PRIVATE);
+        int lastScore = sharedPreferences.getInt("key", 0);
+        return lastScore;
+    }
+
+    /**
+     * menu item here.
+     */
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_layout, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    /**
+     * on option item selected
+     */
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if (item.getItemId() == R.id.redColorMenuItemId) {
+            //get color then store it.
+            linearLayout.setBackgroundColor(getResources().getColor(R.color.red));
+            storeColor(getResources().getColor(R.color.red));
+        } else if (item.getItemId() == R.id.greenColorMenuItemId) {
+            linearLayout.setBackgroundColor(getResources().getColor(R.color.green));
+            storeColor(getResources().getColor(R.color.green));
+        } else if (item.getItemId() == R.id.yellowColorMenuItemId) {
+            linearLayout.setBackgroundColor(getResources().getColor(R.color.yellow));
+            storeColor(getResources().getColor(R.color.yellow));
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+    /**
+     * store color.
+     * @param color
+     */
+    private void storeColor(int color) {
+        SharedPreferences sharedPreferences =
+                getSharedPreferences("storeColor", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putInt("key", color);
+        editor.commit();
+    }
+
+    private int loadColor() {
+        SharedPreferences sharedPreferences =
+                getSharedPreferences("storeColor", Context.MODE_PRIVATE);
+        int selectedColor = sharedPreferences.getInt("key",
+                getResources().getColor(R.color.design_default_color_on_primary));
+
+        return selectedColor;
     }
 }
