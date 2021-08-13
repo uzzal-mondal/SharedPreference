@@ -2,6 +2,7 @@ package com.cloudeducertios.mysharedpreference;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -17,11 +18,13 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
-    EditText nameEt, passEt;
-    Button saveBtn, loadBtn, increaseButton, decreaseButton;
-    TextView textShow, textScore;
-    LinearLayout linearLayout;
+
+    private EditText etFirstName, etLastName, etPassWord;
+    private Button saveBtn, loadBtn, increaseBtn, decreaseBtn;
+    private TextView textResult, textScore;
     int score = 0;
+    LinearLayout linearLayout;
+
 
     @SuppressLint("SetTextI18n")
     @Override
@@ -34,187 +37,223 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     @SuppressLint("SetTextI18n")
     private void inIt() {
-        nameEt = findViewById(R.id.edit_text_name);
-        passEt = findViewById(R.id.edit_text_password);
+        etFirstName = findViewById(R.id.edit_text_fName);
+        etLastName = findViewById(R.id.edit_text_lName);
+        etPassWord = findViewById(R.id.edit_text_password);
+        textResult = findViewById(R.id.text_id);
+        textScore = findViewById(R.id.text_score_id);
         saveBtn = findViewById(R.id.save_btn);
         loadBtn = findViewById(R.id.load_btn);
-        increaseButton = findViewById(R.id.increase_btn);
-        decreaseButton = findViewById(R.id.decrease_btn);
-        textShow = findViewById(R.id.text_id);
-        textScore = findViewById(R.id.text_score_id);
         linearLayout = findViewById(R.id.linear_layout);
+        increaseBtn = findViewById(R.id.increase_btn);
+        decreaseBtn = findViewById(R.id.decrease_btn);
+        saveBtn.setOnClickListener(this::onClick);
+        loadBtn.setOnClickListener(this::onClick);
+        increaseBtn.setOnClickListener(this::onClick);
+        decreaseBtn.setOnClickListener(this::onClick);
 
-        saveBtn.setOnClickListener(this);
-        loadBtn.setOnClickListener(this);
-        increaseButton.setOnClickListener(this);
-        decreaseButton.setOnClickListener(this);
-
-        //when a activity call then showing game score.
-        if (loadScore() != 0) {
-            textScore.setText("Score: " + loadScore());
-        }
-
-        // when I am select with store background color.
-        if (loadColor()!= getResources().getColor(R.color.design_default_color_on_primary)){
+        if (loadColor() != ContextCompat.getColor(this, R.color.red)) {
             linearLayout.setBackgroundColor(loadColor());
         }
+        if (loadScore() != 0) {
+            textScore.setText("Score : " + loadScore());
+        }
+
 
     }
 
-    @SuppressLint("SetTextI18n")
+    /**
+     * save button click to data save ...!
+     *
+     * @param v
+     */
     @Override
     public void onClick(View v) {
         if (v.getId() == R.id.save_btn) {
             saveData();
-
         } else if (v.getId() == R.id.load_btn) {
             loadData();
-
         } else if (v.getId() == R.id.increase_btn) {
             score = score + 10;
-            textScore.setText("Score: " + score);
+            textScore.setText("Score : " + score);
             saveScore(score);
             Toast.makeText(this, "increase", Toast.LENGTH_SHORT).show();
 
         } else if (v.getId() == R.id.decrease_btn) {
             score = score - 10;
-            textScore.setText("Score: " + score);
+            textScore.setText("Score : " + score);
             saveScore(score);
             Toast.makeText(this, "decrease", Toast.LENGTH_SHORT).show();
+
         }
     }
 
 
-    /**
-     * Save data..
-     */
-    @SuppressLint("ApplySharedPref")
-    public void saveData() {
+    private void saveData() {
         /**
-         * first edit text data show..
+         * first work data convert to string.
          */
-        String userName = nameEt.getText().toString();
-        String userPass = passEt.getText().toString();
-        /**
-         * if the data null then - don't storage.
-         * data nai, tahole store korbo, ki.
-         */
-        if (userName.equals("") && userPass.equals("")) {
-            Toast.makeText(this, "please enter some data.", Toast.LENGTH_SHORT).show();
+        String fName = etFirstName.getText().toString();
+        String lName = etLastName.getText().toString();
+        String password = etPassWord.getText().toString();
+
+        if (fName.equals("") && (lName.equals("") && password.equals(""))) {
+            Toast.makeText(this, "please input your data then  click to save", Toast.LENGTH_SHORT).show();
         } else {
             /**
-             * Todo: shared preference data storage or write..
-             * Shared preference data saved.
-             * 1.just key, 2.Mode private - data don't access.
-             * sharedPreferences.edit() - for work data write.
-             * editor er dara data put korbo.
+             * through the shared preference data save.
              */
-            SharedPreferences sharedPreferences =
-                    getSharedPreferences("myDetails", Context.MODE_PRIVATE);
-            @SuppressLint("CommitPrefEdits")
+            SharedPreferences sharedPreferences = getSharedPreferences("fileName", MODE_PRIVATE);
             SharedPreferences.Editor editor = sharedPreferences.edit();
-            editor.putString("nameKey", userName);
-            editor.putString("passKey", userPass);
-            //data clear..
-            nameEt.setText("");
-            passEt.setText("");
-            editor.commit();
-            Toast.makeText(this, "Data store is successfully.", Toast.LENGTH_SHORT).show();
+            editor.putString("fNameKey", fName);
+            editor.putString("lNameKey", lName);
+            editor.putString("passwordKey", password);
+            /**
+             * todo: second app open then data is clear..
+             */
+            etFirstName.setText("");
+            etLastName.setText("");
+            etPassWord.setText("");
+            editor.apply();
+            Toast.makeText(this, "Successfully data save.",
+                    Toast.LENGTH_SHORT).show();
         }
     }
 
-
-    /**
-     * Load or Read data...
-     */
     @SuppressLint("SetTextI18n")
     private void loadData() {
-        /**
-         * Read data or Load data.
-         */
-        SharedPreferences sharedPreferences =
-                getSharedPreferences("myDetails", Context.MODE_PRIVATE);
-        /**
-         * save button er key dara amara data retrieve/fetch korbo. like - nameKey, passKey
-         * sharedprep e key thakle data retrieve korbo, otherwise korbona.
-         * contains method for - string key. - key ache kina.. key thakle data  load do it.
-         */
-        if (sharedPreferences.contains("nameKey") && sharedPreferences.contains("passKey")) {
+        String fName = etFirstName.getText().toString();
+        String lName = etLastName.getText().toString();
+        String password = etPassWord.getText().toString();
+
+        if (fName.equals("") && lName.equals("") && password.equals("")) {
+            SharedPreferences sharedPreferences = getSharedPreferences("fileName",
+                    Context.MODE_PRIVATE);
             /**
-             * key gulor jonno amara value khuje ber korte parbo..
-             * in case key match na hole - data not found.
-             * get string - data load / read / retrieve.
+             * key found then execute the line...
              */
-            String userName = sharedPreferences.getString("nameKey", "Data not found");
-            String passName = sharedPreferences.getString("passKey", "Data not found");
-            textShow.setText("Name: " + userName + "\n" + "pass: " + passName);
+            if (sharedPreferences.contains("fNameKey") && sharedPreferences.contains("lNameKey")
+                    && sharedPreferences.contains("passwordKey")) {
+                fName = sharedPreferences.getString("fNameKey", "First name not found");
+                lName = sharedPreferences.getString("lNameKey", "Last name not found");
+                password = sharedPreferences.getString("passwordKey", "Password name not found");
+                textResult.setText("FirstName : " + fName + "\n" +
+                        "Last Name : " + lName + "\n" + "Password : " + password);
+            } else {
+                Toast.makeText(this, "Please input your data then click save",
+                        Toast.LENGTH_SHORT).show();
+            }
+
         }
-
-    }
-
-    @SuppressLint("ApplySharedPref")
-    private void saveScore(int score) {
-        SharedPreferences sharedPreferences =
-                getSharedPreferences("dataSave", Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putInt("key", score);
-        editor.commit();
-    }
-
-    private int loadScore() {
-        SharedPreferences sharedPreferences =
-                getSharedPreferences("dataSave", Context.MODE_PRIVATE);
-        int lastScore = sharedPreferences.getInt("key", 0);
-        return lastScore;
     }
 
     /**
-     * menu item here.
+     * increase save data
+     *
+     * @param score
+     */
+    private void saveScore(int score) {
+        SharedPreferences sharedPreferences = getSharedPreferences("fileName", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putInt("inKey", score);
+        editor.apply();
+    }
+
+    /**
+     * save data then load score..
+     *
+     * @return
+     */
+    private int loadScore() {
+        SharedPreferences sharedPreferences = getSharedPreferences("fileName", Context.MODE_PRIVATE);
+        int score = sharedPreferences.getInt("inKey", 0);
+        return score;
+    }
+
+
+    /**
+     * storage setting by menu... !
      */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
+        // menu layout include..
         getMenuInflater().inflate(R.menu.menu_layout, menu);
         return super.onCreateOptionsMenu(menu);
     }
 
     /**
-     * on option item selected
+     * when menu item select then how is working...
+     * then use to onOption menu item selecte..con
      */
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        /**
+         * which item click then find it.
+         */
         if (item.getItemId() == R.id.redColorMenuItemId) {
-            //get color then store it.
-            linearLayout.setBackgroundColor(getResources().getColor(R.color.red));
-            storeColor(getResources().getColor(R.color.red));
-        } else if (item.getItemId() == R.id.greenColorMenuItemId) {
-            linearLayout.setBackgroundColor(getResources().getColor(R.color.green));
-            storeColor(getResources().getColor(R.color.green));
-        } else if (item.getItemId() == R.id.yellowColorMenuItemId) {
-            linearLayout.setBackgroundColor(getResources().getColor(R.color.yellow));
-            storeColor(getResources().getColor(R.color.yellow));
+            /**
+             * attach background this layout.
+             * color storage in shared preference.
+             */
+            linearLayout.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.green));
+            /**
+             * this color is storage
+             */
+            colorStorage(ContextCompat.getColor(getApplicationContext(), R.color.green));
         }
-
+        if (item.getItemId() == R.id.greenColorMenuItemId) {
+            /**
+             * attach background this layout.
+             * color storage in shared preference.
+             */
+            linearLayout.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.green));
+            /**
+             * this color is storage
+             */
+            colorStorage(ContextCompat.getColor(getApplicationContext(), R.color.green));
+        }
+        if (item.getItemId() == R.id.yellowColorMenuItemId) {
+            /**
+             * attach background this layout.
+             * color storage in shared preference.
+             */
+            linearLayout.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.green));
+            /**
+             * this color is storage
+             */
+            colorStorage(ContextCompat.getColor(getApplicationContext(), R.color.green));
+        }
         return super.onOptionsItemSelected(item);
     }
 
     /**
-     * store color.
+     * color storage to shared preference....
+     *
      * @param color
      */
-    private void storeColor(int color) {
-        SharedPreferences sharedPreferences =
-                getSharedPreferences("storeColor", Context.MODE_PRIVATE);
+    private void colorStorage(int color) {
+        SharedPreferences sharedPreferences = getSharedPreferences("colorStorage", MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putInt("key", color);
-        editor.commit();
+        editor.putInt("colorKey", color);
+        editor.apply();
     }
 
+    /**
+     * load color and app again open then select was color...
+     *
+     * @return
+     */
     private int loadColor() {
-        SharedPreferences sharedPreferences =
-                getSharedPreferences("storeColor", Context.MODE_PRIVATE);
-        int selectedColor = sharedPreferences.getInt("key",
-                getResources().getColor(R.color.design_default_color_on_primary));
-
-        return selectedColor;
+        SharedPreferences sharedPreferences = getSharedPreferences("colorStorage", MODE_PRIVATE);
+        int color = sharedPreferences.getInt("colorKey", ContextCompat.getColor(this, R.color.red));
+        return color;
     }
+
+
+    /**
+     * Take the button then working..
+     * we would set color status bar , action bar , everything place..
+     */
+
 }
+

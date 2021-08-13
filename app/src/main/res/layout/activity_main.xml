@@ -2,31 +2,42 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/linear_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/linear_layout"
     android:orientation="vertical"
     tools:context=".MainActivity">
 
     <EditText
-        android:id="@+id/edit_text_name"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
+        android:id="@+id/edit_text_fName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Enter your user name."
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:hint="Enter your first name."
+        android:textColor="@color/black"
+        android:textColorHint="@color/black"
+        android:textSize="16sp" />
+
+    <EditText
+        android:id="@+id/edit_text_lName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:hint="Enter your last name."
         android:textColor="@color/black"
         android:textColorHint="@color/black"
         android:textSize="16sp" />
 
     <EditText
         android:id="@+id/edit_text_password"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:inputType="numberPassword"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
         android:hint="Enter your user password."
+        android:inputType="numberPassword"
         android:textColor="@color/black"
         android:textColorHint="@color/black"
         android:textSize="16sp" />
@@ -64,30 +75,38 @@
 
     <Button
         android:id="@+id/increase_btn"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginEnd="32dp"
         android:text="Increase" />
 
 
     <Button
         android:id="@+id/decrease_btn"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginEnd="32dp"
         android:text="Decrease" />
 
     <TextView
         android:id="@+id/text_score_id"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
         android:gravity="center"
         android:text="score"
         android:textColor="@color/black"
         android:textSize="16sp" />
+
+    <Switch
+        android:id="@+id/on_off_switch"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        android:textOff="OFF"
+        android:textOn="ON"/>
 
 </LinearLayout>
