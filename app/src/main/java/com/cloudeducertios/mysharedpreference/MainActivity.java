@@ -200,28 +200,27 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
              * this color is storage
              */
             colorStorage(ContextCompat.getColor(getApplicationContext(), R.color.green));
-        }
-        if (item.getItemId() == R.id.greenColorMenuItemId) {
+        } else if (item.getItemId() == R.id.greenColorMenuItemId) {
             /**
              * attach background this layout.
              * color storage in shared preference.
              */
-            linearLayout.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.green));
+            linearLayout.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.black));
             /**
              * this color is storage
              */
-            colorStorage(ContextCompat.getColor(getApplicationContext(), R.color.green));
+            colorStorage(ContextCompat.getColor(getApplicationContext(), R.color.black));
         }
         if (item.getItemId() == R.id.yellowColorMenuItemId) {
             /**
              * attach background this layout.
              * color storage in shared preference.
              */
-            linearLayout.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.green));
+            linearLayout.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.yellow));
             /**
              * this color is storage
              */
-            colorStorage(ContextCompat.getColor(getApplicationContext(), R.color.green));
+            colorStorage(ContextCompat.getColor(getApplicationContext(), R.color.yellow));
         }
         return super.onOptionsItemSelected(item);
     }
