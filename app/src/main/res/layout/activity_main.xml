@@ -15,8 +15,8 @@
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
         android:hint="Enter your first name."
-        android:textColor="@color/black"
-        android:textColorHint="@color/black"
+        android:textColor="@android:color/white"
+        android:textColorHint="@android:color/white"
         android:textSize="16sp" />
 
     <EditText
@@ -25,9 +25,9 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
-        android:hint="Enter your last name."
-        android:textColor="@color/black"
-        android:textColorHint="@color/black"
+        android:hint="Enter your last name"
+        android:textColor="@android:color/white"
+        android:textColorHint="@android:color/white"
         android:textSize="16sp" />
 
     <EditText
@@ -38,8 +38,8 @@
         android:layout_marginEnd="16dp"
         android:hint="Enter your user password."
         android:inputType="numberPassword"
-        android:textColor="@color/black"
-        android:textColorHint="@color/black"
+        android:textColor="@android:color/white"
+        android:textColorHint="@android:color/white"
         android:textSize="16sp" />
 
     <LinearLayout
@@ -70,7 +70,19 @@
         android:layout_height="wrap_content"
         android:gravity="center"
         android:text="text"
-        android:textColor="@color/black"
+        android:textColor="@android:color/white"
+        android:textColorHint="@android:color/white"
+        android:textSize="16sp" />
+
+    <TextView
+        android:id="@+id/text_score_id"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:gravity="center"
+        tools:text="score"
+        android:textColor="@android:color/white"
         android:textSize="16sp" />
 
     <Button
@@ -90,23 +102,18 @@
         android:layout_marginEnd="32dp"
         android:text="Decrease" />
 
-    <TextView
-        android:id="@+id/text_score_id"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
-        android:gravity="center"
-        android:text="score"
-        android:textColor="@color/black"
-        android:textSize="16sp" />
+
 
     <Switch
-        android:id="@+id/on_off_switch"
+        android:id="@+id/switch_id"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_gravity="center"
+        android:padding="6dp"
+        android:textColor="@color/black"
         android:textOff="OFF"
-        android:textOn="ON"/>
+        android:textOn="ON"
+        android:textSize="25sp"
+        android:textStyle="bold" />
 
 </LinearLayout>

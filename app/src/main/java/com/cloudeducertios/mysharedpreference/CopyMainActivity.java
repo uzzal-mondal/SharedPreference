@@ -60,7 +60,7 @@ public class CopyMainActivity extends AppCompatActivity implements View.OnClickL
     public void onClick(View v) {
         if (v.getId() == R.id.save_btn) {
             /**
-             * user details store / save for shared preference.
+             * user details store / save for shared preference. / editor / save.
              */
             saveData();
 
@@ -83,6 +83,7 @@ public class CopyMainActivity extends AppCompatActivity implements View.OnClickL
             Toast.makeText(this, "decrease", Toast.LENGTH_SHORT).show();
         }
     }
+
     /**
      * Save data..
      */
@@ -93,7 +94,6 @@ public class CopyMainActivity extends AppCompatActivity implements View.OnClickL
          */
         String userName = nameEt.getText().toString();
         String userPass = passEt.getText().toString();
-
         /**
          * when user first of all don't put the data then request to user put the data.
          */
@@ -102,7 +102,7 @@ public class CopyMainActivity extends AppCompatActivity implements View.OnClickL
         } else {
             /**
              * if the user get the data we are easily write or save the data.
-             * Todo: shared preference data storage or  write..
+             * Todo: shared preference data storage or  write with save...
              * myDetails is - database name.
              */
             SharedPreferences sharedPreferences = getSharedPreferences("myDetails", MODE_PRIVATE);
@@ -148,6 +148,10 @@ public class CopyMainActivity extends AppCompatActivity implements View.OnClickL
              */
             String userName = sharedPreferences.getString("userName", "Data not found");
             String passName = sharedPreferences.getString("userPass", "Data not found");
+            Toast.makeText(this, "Data retrieve successfully", Toast.LENGTH_SHORT).show();
+            /**
+             * data set to the text view..
+             */
             textShow.setText("Name: " + userName + "\n" + "pass: " + passName);
         }
 

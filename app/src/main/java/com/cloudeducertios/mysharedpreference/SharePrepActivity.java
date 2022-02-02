@@ -113,7 +113,6 @@ public class SharePrepActivity extends AppCompatActivity implements View.OnClick
              * 1.just key, 2.Mode private - data don't access.
              * sharedPreferences.edit() - for work data write.
              * editor er dara data put korbo.
-             *
              */
             SharedPreferences sharedPreferences =
                     getSharedPreferences("myDetails", Context.MODE_PRIVATE);

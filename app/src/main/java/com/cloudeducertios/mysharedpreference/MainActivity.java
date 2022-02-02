@@ -7,13 +7,16 @@ import androidx.core.content.ContextCompat;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -24,6 +27,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private TextView textResult, textScore;
     int score = 0;
     LinearLayout linearLayout;
+    Switch aSwitch;
 
 
     @SuppressLint("SetTextI18n")
@@ -47,10 +51,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         linearLayout = findViewById(R.id.linear_layout);
         increaseBtn = findViewById(R.id.increase_btn);
         decreaseBtn = findViewById(R.id.decrease_btn);
+        aSwitch = findViewById(R.id.switch_id);
         saveBtn.setOnClickListener(this::onClick);
         loadBtn.setOnClickListener(this::onClick);
         increaseBtn.setOnClickListener(this::onClick);
         decreaseBtn.setOnClickListener(this::onClick);
+
+        showSwitch();
 
         if (loadColor() != ContextCompat.getColor(this, R.color.red)) {
             linearLayout.setBackgroundColor(loadColor());
@@ -58,6 +65,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         if (loadScore() != 0) {
             textScore.setText("Score : " + loadScore());
         }
+        loadSwitchColor();
 
 
     }
@@ -84,7 +92,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             textScore.setText("Score : " + score);
             saveScore(score);
             Toast.makeText(this, "decrease", Toast.LENGTH_SHORT).show();
-
         }
     }
 
@@ -98,7 +105,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         String password = etPassWord.getText().toString();
 
         if (fName.equals("") && (lName.equals("") && password.equals(""))) {
-            Toast.makeText(this, "please input your data then  click to save", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "please input your data then  click to save button.", Toast.LENGTH_SHORT).show();
         } else {
             /**
              * through the shared preference data save.
@@ -127,6 +134,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         String password = etPassWord.getText().toString();
 
         if (fName.equals("") && lName.equals("") && password.equals("")) {
+            /**
+             * name - db name.
+             * mode - private. don't access to data anyone.
+             */
             SharedPreferences sharedPreferences = getSharedPreferences("fileName",
                     Context.MODE_PRIVATE);
             /**
@@ -149,7 +160,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     /**
      * increase save data
-     *
      * @param score
      */
     private void saveScore(int score) {
@@ -161,7 +171,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     /**
      * save data then load score..
-     *
      * @return
      */
     private int loadScore() {
@@ -183,7 +192,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     /**
      * when menu item select then how is working...
-     * then use to onOption menu item selecte..con
+     * then use to onOption menu item selected....
      */
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
@@ -205,11 +214,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
              * attach background this layout.
              * color storage in shared preference.
              */
-            linearLayout.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.black));
+            linearLayout.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.red));
             /**
              * this color is storage
              */
-            colorStorage(ContextCompat.getColor(getApplicationContext(), R.color.black));
+            colorStorage(ContextCompat.getColor(getApplicationContext(), R.color.red));
         }
         if (item.getItemId() == R.id.yellowColorMenuItemId) {
             /**
@@ -227,7 +236,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     /**
      * color storage to shared preference....
-     *
      * @param color
      */
     private void colorStorage(int color) {
@@ -239,7 +247,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     /**
      * load color and app again open then select was color...
-     *
      * @return
      */
     private int loadColor() {
@@ -251,8 +258,39 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     /**
      * Take the button then working..
-     * we would set color status bar , action bar , everything place..
+     * we would set color status bar, action bar, everything place..
      */
+
+    /**
+     * switch button to click all data..
+     */
+    private void showSwitch() {
+        aSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                /**
+                 * first data saved
+                 */
+                SharedPreferences sharedPreferences = getSharedPreferences("bgColor", MODE_PRIVATE);
+                SharedPreferences.Editor editor = sharedPreferences.edit();
+                editor.putBoolean("bgColorKey", isChecked);
+                editor.apply();
+
+                linearLayout.setBackgroundColor(isChecked ? Color.parseColor("#56ab77")
+                        : Color.parseColor("#000000"));
+            }
+        });
+    }
+
+    private boolean loadSwitchColor() {
+        SharedPreferences sharedPreferences = getSharedPreferences("bgColor", MODE_PRIVATE);
+        boolean isChecked = sharedPreferences.getBoolean("bgColorKey", false);
+        linearLayout.setBackgroundColor(isChecked ? Color.parseColor("#56ab77")
+                : Color.parseColor("#000000"));
+        aSwitch.setChecked(isChecked);
+        return isChecked;
+
+    }
 
 }
 
